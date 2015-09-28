@@ -24,21 +24,27 @@ var iQuestion = 0;
 var buttonNode = document.getElementById('quizNextBtn');
 buttonNode.addEventListener('click', function (event) {
     var prompt = document.getElementById('quizPrompt');
+    var choicesNode = this.previousElementSibling;
+
+    // Remove all div child nodes
+    while (choicesNode.firstChild) {
+        choicesNode.removeChild(choicesNode.firstChild);
+    }
+
     if (iQuestion < allQuestions.length) {
         var question = allQuestions[iQuestion];
         prompt.textContent = question.question;
-        var choicesNode = this.previousElementSibling();
 
         for (var i = 0; i < question.choices.length; i++) {
-            alert(i);
+            console.log(i);
             var input = document.createElement('input')
             input.type = 'radio';
             input.name = 'question';
             input.value = i.toString();
-            var choice = document.createElement('text');
-            choice.textContent = question.choices[i];
-            input.appendChild(choice);
+            var choice = document.createTextNode(question.choices[i]);
             choicesNode.appendChild(input);
+            choicesNode.appendChild(document.createTextNode(question.choices[i]));
+            choicesNode.appendChild(document.createElement('br'));
         }
 
         this.text = "Next";
