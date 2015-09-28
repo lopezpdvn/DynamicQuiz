@@ -32,11 +32,11 @@ buttonNode.addEventListener('click', function (event) {
     }
 
     if (iQuestion < allQuestions.length) {
+        this.disabled = true;
         var question = allQuestions[iQuestion];
         prompt.textContent = question.question;
 
         for (var i = 0; i < question.choices.length; i++) {
-            console.log(i);
             var input = document.createElement('input')
             input.type = 'radio';
             input.name = 'question';
@@ -53,5 +53,18 @@ buttonNode.addEventListener('click', function (event) {
         prompt.textContent = "You finished the quiz, your score is "
             + nCorrectAnswer + "/" + allQuestions.length;
         this.style.display = 'none';
+    }
+});
+
+var choicesNode = document.getElementById('choices');
+choicesNode.addEventListener('click', function (event) {
+    var target = event.target;
+    switch (target.name) {
+        case "question":
+            var button = document.getElementById('quizNextBtn');
+            button.disabled = false;
+            break;
+        default:
+            break;
     }
 });
