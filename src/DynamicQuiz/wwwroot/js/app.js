@@ -14,15 +14,21 @@
         choices: ["60", "34", "77", "20"],
         correctAnswer: 0
     },
-]
-
+    {
+        question: "What's the current version of ECMAScript?",
+        choices: ["4", "5", "6", "7"],
+        correctAnswer: 2
+    },
+];
 var nCorrectAnswer = 0;
 var iQuestion = -1;
-
 var buttonNode = document.getElementById('quizNextBtn');
+var choicesNode = document.getElementById('choices');
+
 buttonNode.addEventListener('click', function (event) {
     var prompt = document.getElementById('quizPrompt');
 
+    // Check if answer is correct and keep track
     if (iQuestion >= 0) {
         var radios = this.parentElement.getElementsByTagName('input');
         for (var i = 0; i < radios.length; i++) {
@@ -40,6 +46,7 @@ buttonNode.addEventListener('click', function (event) {
     }
 
     if (iQuestion < allQuestions.length - 1) {
+        // Populate next question and anssers
         iQuestion++;
         this.disabled = true;
         var question = allQuestions[iQuestion];
@@ -50,13 +57,13 @@ buttonNode.addEventListener('click', function (event) {
             input.type = 'radio';
             input.name = 'question';
             input.value = i.toString();
-            var choice = document.createTextNode(question.choices[i]);
             choicesNode.appendChild(input);
             choicesNode.appendChild(document.createTextNode(question.choices[i]));
             choicesNode.appendChild(document.createElement('br'));
         }
         this.text = "Next";
     } else {
+        // End of test. Show result.
         prompt.textContent = "You finished the quiz, your score is "
             + nCorrectAnswer + "/" + allQuestions.length;
         this.disabled = true;
@@ -64,13 +71,11 @@ buttonNode.addEventListener('click', function (event) {
     }
 });
 
-var choicesNode = document.getElementById('choices');
 choicesNode.addEventListener('click', function (event) {
     var target = event.target;
     switch (target.name) {
         case "question":
-            var button = document.getElementById('quizNextBtn');
-            button.disabled = false;
+            buttonNode.disabled = false;
             break;
         default:
             break;
