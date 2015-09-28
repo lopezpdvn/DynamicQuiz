@@ -7,8 +7,13 @@
 <body>
     <div id="content">
         <h1 id="header">Welcome to your Simple Quiz</h1>
-            <p>Press the button to start the quiz.</p>
-            <input type="button" value="Start quiz!"/>
+            <p id="quizPrompt">Press the button to start the quiz.</p>
+            <div id="choices">
+                <input type="radio" name="question" value="0" /> A
+                <input type="radio" name="question" value="1" /> b
+                <input type="radio" name="question" value="2" /> c
+            </div>
+            <input id="quizNextBtn" type="button" value="Start quiz!"/>
     </div>
     <br/>
     <footer>
