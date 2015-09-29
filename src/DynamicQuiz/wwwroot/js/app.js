@@ -21,12 +21,26 @@
     },
 ];
 var nCorrectAnswer = 0;
+var answers = [];
 var iQuestion = -1;
-var buttonNode = document.getElementById('quizNextBtn');
+var nextBtnNode = document.getElementById('quizNextBtn');
+var backBtnNode = document.getElementById('quizBackBtn');
+var quizButtons = [backBtnNode, nextBtnNode];
+backBtnNode.style.display = 'none';
 var choicesNode = document.getElementById('choices');
 
-buttonNode.addEventListener('click', function (event) {
+nextBtnNode.addEventListener('click', function (event) {
     var prompt = document.getElementById('quizPrompt');
+
+    switch (iQuestion) {
+        case -1:
+            backBtnNode.disabled = true;
+            backBtnNode.style.display = '';
+            break;
+        case 0:
+            backBtnNode.disabled = false;
+            break;
+    }
 
     // Check if answer is correct and keep track
     if (iQuestion >= 0) {
@@ -61,13 +75,16 @@ buttonNode.addEventListener('click', function (event) {
             choicesNode.appendChild(document.createTextNode(question.choices[i]));
             choicesNode.appendChild(document.createElement('br'));
         }
-        this.text = "Next";
+        this.value = "Next";
     } else {
         // End of test. Show result.
         prompt.textContent = "You finished the quiz, your score is "
             + nCorrectAnswer + "/" + allQuestions.length;
-        this.disabled = true;
-        this.style.display = 'none';
+
+        for (var i = 0; i < quizButtons.length; i++) {
+            quizButtons[i].disabled = true;
+            quizButtons[i].style.display = 'none';
+        }
     }
 });
 
@@ -75,7 +92,7 @@ choicesNode.addEventListener('click', function (event) {
     var target = event.target;
     switch (target.name) {
         case "question":
-            buttonNode.disabled = false;
+            nextBtnNode.disabled = false;
             break;
         default:
             break;
