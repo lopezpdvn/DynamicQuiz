@@ -66,7 +66,7 @@ function nextState(event) {
         // Populate next question and answers
         switch (target.name) {
             case "quizBackBtn":
-                iQuestion = iQuestion > 1 ? iQuestion - 1 : iQuestion;
+                iQuestion = iQuestion > 0 ? iQuestion - 1 : iQuestion;
                 break;
             case "quizNextBtn":
                 iQuestion = iQuestion < allQuestions.length - 1
@@ -108,6 +108,15 @@ quizContentNode.addEventListener('click', function (event) {
         case "quizBackBtn":
         case "quizNextBtn":
             nextState(event);
+            break;
+    }
+});
+
+choicesNode.addEventListener('change', function (event) {
+    var target = event.target;
+    switch (target.name) {
+        case "question":
+            nextBtnNode.disabled = false;
             break;
     }
 });
