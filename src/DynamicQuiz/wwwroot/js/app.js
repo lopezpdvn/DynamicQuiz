@@ -28,14 +28,17 @@ var backBtnNode = document.getElementById('quizBackBtn');
 var quizButtons = [backBtnNode, nextBtnNode];
 backBtnNode.style.display = 'none';
 var choicesNode = document.getElementById('choices');
+var quizContentNode = document.getElementById('quizContent');
 
-nextBtnNode.addEventListener('click', function (event) {
+function nextState(event) {
     var prompt = document.getElementById('quizPrompt');
+    var target = event.target;
 
     switch (iQuestion) {
         case -1:
             backBtnNode.disabled = true;
             backBtnNode.style.display = '';
+            nextBtnNode.value = "Next";
             break;
         case 0:
             backBtnNode.disabled = false;
@@ -44,7 +47,7 @@ nextBtnNode.addEventListener('click', function (event) {
 
     // Check if answer is correct and keep track
     if (iQuestion >= 0) {
-        var radios = this.parentElement.getElementsByTagName('input');
+        var radios = target.parentElement.getElementsByTagName('input');
         for (var i = 0; i < radios.length; i++) {
             if (radios[i].checked) {
                 break;
@@ -60,9 +63,18 @@ nextBtnNode.addEventListener('click', function (event) {
     }
 
     if (iQuestion < allQuestions.length - 1) {
-        // Populate next question and anssers
-        iQuestion++;
-        this.disabled = true;
+        // Populate next question and answers
+        switch (target.name) {
+            case "quizBackBtn":
+                iQuestion = iQuestion > 1 ? iQuestion - 1 : iQuestion;
+                break;
+            case "quizNextBtn":
+                iQuestion = iQuestion < allQuestions.length - 1
+                    ? iQuestion + 1 : iQuestion;
+                break;
+        }
+
+        nextBtnNode.disabled = true;
         var question = allQuestions[iQuestion];
         prompt.textContent = question.question;
 
@@ -75,7 +87,6 @@ nextBtnNode.addEventListener('click', function (event) {
             choicesNode.appendChild(document.createTextNode(question.choices[i]));
             choicesNode.appendChild(document.createElement('br'));
         }
-        this.value = "Next";
     } else {
         // End of test. Show result.
         prompt.textContent = "You finished the quiz, your score is "
@@ -86,15 +97,17 @@ nextBtnNode.addEventListener('click', function (event) {
             quizButtons[i].style.display = 'none';
         }
     }
-});
+}
 
-choicesNode.addEventListener('click', function (event) {
+quizContentNode.addEventListener('click', function (event) {
     var target = event.target;
     switch (target.name) {
         case "question":
             nextBtnNode.disabled = false;
             break;
-        default:
+        case "quizBackBtn":
+        case "quizNextBtn":
+            nextState(event);
             break;
     }
 });
