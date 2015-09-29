@@ -31,48 +31,51 @@ var choicesNode = document.getElementById('choices');
 var quizContentNode = document.getElementById('quizContent');
 
 function nextState(event) {
+    if(iQuestion === -1) {
+        backBtnNode.disabled = true;
+        backBtnNode.style.display = '';
+        nextBtnNode.value = "Next";
+    }
+
     var prompt = document.getElementById('quizPrompt');
     var target = event.target;
 
-    switch (iQuestion) {
-        case -1:
-            backBtnNode.disabled = true;
-            backBtnNode.style.display = '';
-            nextBtnNode.value = "Next";
+    switch (target.name) {
+        case "quizBackBtn":
+            iQuestion = iQuestion > 0 ? iQuestion - 1 : iQuestion;
             break;
-        case 0:
-            backBtnNode.disabled = false;
+        case "quizNextBtn":
+            iQuestion = iQuestion < allQuestions.length
+                ? iQuestion + 1 : iQuestion;
             break;
     }
 
-    // Check if answer is correct and keep track
-    if (iQuestion >= 0) {
-        var radios = target.parentElement.getElementsByTagName('input');
-        for (var i = 0; i < radios.length; i++) {
-            if (radios[i].checked) {
-                break;
-            }
-        }
-        nCorrectAnswer = i === allQuestions[iQuestion].correctAnswer
-            ? nCorrectAnswer + 1 : nCorrectAnswer;
+    if (iQuestion === 0) {
+        backBtnNode.disabled = true;
     }
+    else {
+        backBtnNode.disabled = false;
+    }
+
+    // Check if answer is correct and keep track
+    //if (iQuestion >= 0) {
+    //    var radios = target.parentElement.getElementsByTagName('input');
+    //    for (var i = 0; i < radios.length; i++) {
+    //        if (radios[i].checked) {
+    //            break;
+    //        }
+    //    }
+    //    nCorrectAnswer = i === allQuestions[iQuestion].correctAnswer
+    //        ? nCorrectAnswer + 1 : nCorrectAnswer;
+    //}
 
     // Remove all div child nodes
     while (choicesNode.firstChild) {
         choicesNode.removeChild(choicesNode.firstChild);
     }
 
-    if (iQuestion < allQuestions.length - 1) {
+    if (iQuestion < allQuestions.length) {
         // Populate next question and answers
-        switch (target.name) {
-            case "quizBackBtn":
-                iQuestion = iQuestion > 0 ? iQuestion - 1 : iQuestion;
-                break;
-            case "quizNextBtn":
-                iQuestion = iQuestion < allQuestions.length - 1
-                    ? iQuestion + 1 : iQuestion;
-                break;
-        }
 
         nextBtnNode.disabled = true;
         var question = allQuestions[iQuestion];
@@ -102,9 +105,6 @@ function nextState(event) {
 quizContentNode.addEventListener('click', function (event) {
     var target = event.target;
     switch (target.name) {
-        case "question":
-            nextBtnNode.disabled = false;
-            break;
         case "quizBackBtn":
         case "quizNextBtn":
             nextState(event);
