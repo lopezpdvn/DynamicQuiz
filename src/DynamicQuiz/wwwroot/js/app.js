@@ -106,7 +106,8 @@ quizContentNode.addEventListener('click', function (event) {
     switch (target.name) {
         case "quizBackBtn":
         case "quizNextBtn":
-            nextState(event);
+            $(quizContentNode).fadeOut('slow', function () { nextState(event) });
+            $(quizContentNode).fadeIn();
             break;
     }
 });
