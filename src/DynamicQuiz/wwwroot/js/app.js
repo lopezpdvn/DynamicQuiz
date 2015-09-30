@@ -25,18 +25,13 @@ var answers = new Array(allQuestions.length);
 var iQuestion = -1;
 var nextBtnNode = document.getElementById('quizNextBtn');
 var backBtnNode = document.getElementById('quizBackBtn');
+backBtnNode.style.display = '';
 var quizButtons = [backBtnNode, nextBtnNode];
 backBtnNode.style.display = 'none';
 var choicesNode = document.getElementById('choices');
 var quizContentNode = document.getElementById('quizContent');
 
 function nextState(event) {
-    if(iQuestion === -1) {
-        backBtnNode.disabled = true;
-        backBtnNode.style.display = '';
-        nextBtnNode.value = "Next";
-    }
-
     var prompt = document.getElementById('quizPrompt');
     var target = event.target;
 
@@ -50,11 +45,18 @@ function nextState(event) {
             break;
     }
 
-    if (iQuestion === 0) {
-        backBtnNode.disabled = true;
+    if (iQuestion === allQuestions.length - 1) {
+        nextBtnNode.value = 'Finish Quiz';
     }
-    else {
-        backBtnNode.disabled = false;
+    else if (iQuestion < allQuestions.length - 1) {
+        nextBtnNode.value = 'Next';
+        if (iQuestion === 0) {
+            backBtnNode.style.display = '';
+            backBtnNode.disabled = true;
+        }
+        else {
+            backBtnNode.disabled = false;
+        }
     }
 
     // Remove all div child nodes
@@ -63,8 +65,6 @@ function nextState(event) {
     }
 
     if (iQuestion < allQuestions.length) {
-        // Populate next question and answers
-
         nextBtnNode.disabled = true;
         var question = allQuestions[iQuestion];
         prompt.textContent = question.question;
@@ -74,6 +74,12 @@ function nextState(event) {
             input.type = 'radio';
             input.name = 'answerChoice';
             input.value = i.toString();
+
+            if(answers[iQuestion] === i) {
+                input.checked = true;
+                nextBtnNode.disabled = false;
+            }
+
             choicesNode.appendChild(input);
             choicesNode.appendChild(document.createTextNode(question.choices[i]));
             choicesNode.appendChild(document.createElement('br'));
