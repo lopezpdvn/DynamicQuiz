@@ -21,7 +21,7 @@
     },
 ];
 var nCorrectAnswer = 0;
-var answers = [];
+var answers = new Array(allQuestions.length);
 var iQuestion = -1;
 var nextBtnNode = document.getElementById('quizNextBtn');
 var backBtnNode = document.getElementById('quizBackBtn');
@@ -57,18 +57,6 @@ function nextState(event) {
         backBtnNode.disabled = false;
     }
 
-    // Check if answer is correct and keep track
-    //if (iQuestion >= 0) {
-    //    var radios = target.parentElement.getElementsByTagName('input');
-    //    for (var i = 0; i < radios.length; i++) {
-    //        if (radios[i].checked) {
-    //            break;
-    //        }
-    //    }
-    //    nCorrectAnswer = i === allQuestions[iQuestion].correctAnswer
-    //        ? nCorrectAnswer + 1 : nCorrectAnswer;
-    //}
-
     // Remove all div child nodes
     while (choicesNode.firstChild) {
         choicesNode.removeChild(choicesNode.firstChild);
@@ -84,13 +72,18 @@ function nextState(event) {
         for (var i = 0; i < question.choices.length; i++) {
             var input = document.createElement('input')
             input.type = 'radio';
-            input.name = 'question';
+            input.name = 'answerChoice';
             input.value = i.toString();
             choicesNode.appendChild(input);
             choicesNode.appendChild(document.createTextNode(question.choices[i]));
             choicesNode.appendChild(document.createElement('br'));
         }
     } else {
+        for (var i = 0; i < allQuestions.length; i++) {
+            nCorrectAnswer = allQuestions[i].correctAnswer === answers[i]
+                ? nCorrectAnswer + 1 : nCorrectAnswer;
+        }
+
         // End of test. Show result.
         prompt.textContent = "You finished the quiz, your score is "
             + nCorrectAnswer + "/" + allQuestions.length;
@@ -114,9 +107,14 @@ quizContentNode.addEventListener('click', function (event) {
 
 choicesNode.addEventListener('change', function (event) {
     var target = event.target;
-    switch (target.name) {
-        case "question":
-            nextBtnNode.disabled = false;
-            break;
+    if (target.name === 'answerChoice') {
+        nextBtnNode.disabled = false;
+        var radios = document.getElementsByName('answerChoice');
+        for (var i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                answers[iQuestion] = i;
+                break;
+            }
+        }
     }
 });
