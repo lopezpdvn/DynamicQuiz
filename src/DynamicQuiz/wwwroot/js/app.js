@@ -2,7 +2,6 @@
 (function () {
     var httpRequest = new XMLHttpRequest();
     var jsonPath = '/questions_answers.json';
-    var url = location.protocol + '//' + location.host + jsonPath;
     httpRequest.open('GET', jsonPath, true);
     httpRequest.onreadystatechange = function () {
         if (httpRequest.readyState == 4 && httpRequest.status == 200) {
