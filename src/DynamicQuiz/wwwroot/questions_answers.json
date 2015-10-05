@@ -1,0 +1,29 @@
+﻿{
+  "allQuestions" : [
+    {
+      "choices": [ "1", "10", "5", "7" ],
+      "correctAnswer": 3,
+      "question": "How many days are in a week?"
+    },
+    {
+      "choices": [ "423", "365", "345", "234" ],
+      "correctAnswer": 1,
+      "question": "Hoy many days are in a year?"
+    },
+    {
+      "choices": [ "60", "34", "77", "20" ],
+      "correctAnswer": 0,
+      "question": "Hoy many minutes are in an hour?"
+    },
+    {
+      "choices": [ "4", "5", "6", "7" ],
+      "correctAnswer": 2,
+      "question": "What's the current version of ECMAScript?"
+    },
+    {
+      "choices": [ "1", "8", "5", "2" ],
+      "correctAnswer": 2,
+      "question": "What's the current version of HTML?"
+    }
+  ]
+}

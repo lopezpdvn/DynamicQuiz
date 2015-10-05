@@ -1,27 +1,23 @@
-﻿var allQuestions = [
-    {
-        question: "How many days are in a week?",
-        choices: ["1", "10", "5", "7"],
-        correctAnswer: 3
-    },
-    {
-        question: "Hoy many days are in a year?",
-        choices: ["423", "365", "345", "234"],
-        correctAnswer: 1
-    },
-    {
-        question: "Hoy many minutes are in an hour?",
-        choices: ["60", "34", "77", "20"],
-        correctAnswer: 0
-    },
-    {
-        question: "What's the current version of ECMAScript?",
-        choices: ["4", "5", "6", "7"],
-        correctAnswer: 2
-    },
-];
+﻿var allQuestions, answers;
+(function () {
+    var httpRequest = new XMLHttpRequest();
+    var jsonPath = '/questions_answers.json';
+    var url = location.protocol + '//' + location.host + jsonPath;
+    httpRequest.open('GET', jsonPath, true);
+    httpRequest.onreadystatechange = function () {
+        if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+            try {
+                allQuestions = JSON.parse(httpRequest.responseText).allQuestions;
+                answers = new Array(allQuestions.length);
+            } catch (e) {
+                console.log(e.message);
+            }
+        }
+    };
+    httpRequest.send();
+})();
+
 var nCorrectAnswer = 0;
-var answers = new Array(allQuestions.length);
 var iQuestion = -1;
 var nextBtnNode = document.getElementById('quizNextBtn');
 var backBtnNode = document.getElementById('quizBackBtn');
