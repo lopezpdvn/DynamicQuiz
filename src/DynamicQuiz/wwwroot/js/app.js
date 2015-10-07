@@ -27,6 +27,7 @@ var choicesNode = document.getElementById('choices');
 var quizContentNode = document.getElementById('quizContent');
 
 function nextState(event) {
+    var i;
     var prompt = document.getElementById('quizPrompt');
     var target = event.target;
 
@@ -35,8 +36,8 @@ function nextState(event) {
             iQuestion = iQuestion > 0 ? iQuestion - 1 : iQuestion;
             break;
         case "quizNextBtn":
-            iQuestion = iQuestion < allQuestions.length
-                ? iQuestion + 1 : iQuestion;
+            iQuestion = iQuestion < allQuestions.length ?
+                iQuestion + 1 : iQuestion;
             break;
     }
 
@@ -64,8 +65,8 @@ function nextState(event) {
         var question = allQuestions[iQuestion];
         prompt.textContent = question.question;
 
-        for (var i = 0; i < question.choices.length; i++) {
-            var input = document.createElement('input')
+        for (i = 0; i < question.choices.length; i++) {
+            var input = document.createElement('input');
             input.type = 'radio';
             input.name = 'answerChoice';
             input.value = i.toString();
@@ -80,16 +81,16 @@ function nextState(event) {
             choicesNode.appendChild(document.createElement('br'));
         }
     } else {
-        for (var i = 0; i < allQuestions.length; i++) {
-            nCorrectAnswer = allQuestions[i].correctAnswer === answers[i]
-                ? nCorrectAnswer + 1 : nCorrectAnswer;
+        for (i = 0; i < allQuestions.length; i++) {
+            nCorrectAnswer = allQuestions[i].correctAnswer === answers[i] ?
+                nCorrectAnswer + 1 : nCorrectAnswer;
         }
 
         // End of test. Show result.
-        prompt.textContent = "You finished the quiz, your score is "
-            + nCorrectAnswer + "/" + allQuestions.length;
+        prompt.textContent = "You finished the quiz, your score is " +
+            nCorrectAnswer + "/" + allQuestions.length;
 
-        for (var i = 0; i < quizButtons.length; i++) {
+        for (i = 0; i < quizButtons.length; i++) {
             quizButtons[i].disabled = true;
             quizButtons[i].style.display = 'none';
         }
@@ -101,7 +102,7 @@ quizContentNode.addEventListener('click', function (event) {
     switch (target.name) {
         case "quizBackBtn":
         case "quizNextBtn":
-            $(quizContentNode).fadeOut('slow', function () { nextState(event) });
+            $(quizContentNode).fadeOut('slow', function () { nextState(event); });
             $(quizContentNode).fadeIn();
             break;
     }
